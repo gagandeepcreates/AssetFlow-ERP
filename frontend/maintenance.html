@@ -202,23 +202,22 @@
     </div>
   </div>
 
-  <!-- New Ticket Modal Overlay -->
+  <!-- ══════════════════════════════════════════════════════════
+       Modal 1 — Employee raises a New Maintenance Request
+  ══════════════════════════════════════════════════════════ -->
   <div class="modal-overlay" id="ticket-modal">
     <div class="modal-container">
       <div class="modal-header">
-        <h3 class="text-lg">Create Maintenance Ticket</h3>
+        <h3 class="text-lg">Raise Maintenance Request</h3>
         <button class="alert-close" id="cancel-ticket-btn">
           <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
         </button>
       </div>
       <form id="new-ticket-form">
         <div class="form-group">
-          <label class="form-label" for="new-ticket-id">Ticket ID</label>
-          <input type="text" class="glass-input font-mono" id="new-ticket-id" placeholder="#TKT-XXXX" readonly>
-        </div>
-        <div class="form-group">
           <label class="form-label" for="new-ticket-title">Issue Title</label>
-          <input type="text" class="glass-input" id="new-ticket-title" placeholder="e.g. Server Overheating" required>
+          <input type="text" class="glass-input" id="new-ticket-title"
+                 placeholder="e.g. Server Overheating" required>
         </div>
         <div class="form-group">
           <label class="form-label" for="new-ticket-priority">Priority</label>
@@ -229,54 +228,112 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label" for="new-ticket-tag">Asset Tag ID</label>
-          <input type="text" class="glass-input font-mono" id="new-ticket-tag" placeholder="e.g. ASSET-SR99" required>
+          <label class="form-label" for="new-ticket-tag">Asset Tag (e.g. AF-0114)</label>
+          <input type="text" class="glass-input font-mono" id="new-ticket-tag"
+                 placeholder="AF-XXXX" required>
         </div>
         <div class="form-group">
           <label class="form-label" for="new-ticket-desc">Detailed Description</label>
-          <textarea class="glass-input" id="new-ticket-desc" rows="3" placeholder="Explain the symptoms or scheduled maintenance details..." style="resize: none;" required></textarea>
+          <textarea class="glass-input" id="new-ticket-desc" rows="3"
+                    placeholder="Explain symptoms or scheduled maintenance details..."
+                    style="resize: none;" required></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" style="font-size:12px; padding: 8px 16px;" id="cancel-ticket-btn-2">Cancel</button>
-          <button type="submit" class="btn btn-primary" style="font-size:12px; padding: 8px 16px;">Create Ticket</button>
+          <button type="button" class="btn btn-secondary"
+                  style="font-size:12px;padding:8px 16px;" id="cancel-ticket-btn-2">Cancel</button>
+          <button type="submit" class="btn btn-primary"
+                  style="font-size:12px;padding:8px 16px;">Submit Request</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- scripts -->
-  <script type="module" src="/js/app.js"></script>
-  <script type="module" src="/js/kanban.js"></script>
+  <!-- ══════════════════════════════════════════════════════════
+       Modal 2 — Asset Manager assigns a Technician
+  ══════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="assign-modal">
+    <div class="modal-container" style="max-width:420px;">
+      <div class="modal-header">
+        <h3 class="text-lg" id="assign-modal-heading">Assign Technician</h3>
+        <button class="alert-close" id="cancel-assign-btn">
+          <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+        </button>
+      </div>
+      <form id="assign-form">
+        <div class="form-group">
+          <label class="form-label" for="assign-tech-name">Technician Name</label>
+          <input type="text" class="glass-input" id="assign-tech-name"
+                 placeholder="e.g. Vikram Nair" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  style="font-size:12px;padding:8px 16px;" id="cancel-assign-btn-2">Cancel</button>
+          <button type="submit" class="btn btn-primary"
+                  style="font-size:12px;padding:8px 16px;">
+            <span class="material-symbols-outlined" style="font-size:15px;">engineering</span>
+            Assign
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       Modal 3 — Asset Manager resolves a ticket
+  ══════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="resolve-modal">
+    <div class="modal-container" style="max-width:440px;">
+      <div class="modal-header">
+        <h3 class="text-lg" id="resolve-modal-heading">Resolve Ticket</h3>
+        <button class="alert-close" id="cancel-resolve-btn">
+          <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+        </button>
+      </div>
+      <form id="resolve-form">
+        <div class="form-group">
+          <label class="form-label" for="resolve-notes">Resolution Notes</label>
+          <textarea class="glass-input" id="resolve-notes" rows="4"
+                    placeholder="Describe what was done to fix the issue..."
+                    style="resize:none;" required></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  style="font-size:12px;padding:8px 16px;" id="cancel-resolve-btn-2">Cancel</button>
+          <button type="submit" class="btn btn-primary"
+                  style="font-size:12px;padding:8px 16px;background:var(--success,#10b981);">
+            <span class="material-symbols-outlined" style="font-size:15px;">task_alt</span>
+            Mark Resolved
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Extra cancel button wiring & responsive layout ─────── -->
   <script>
-    // wire up cancel modal button 2
     document.addEventListener('DOMContentLoaded', () => {
-      const cancel2 = document.getElementById('cancel-ticket-btn-2');
-      const overlay = document.getElementById('ticket-modal');
-      const form = document.getElementById('new-ticket-form');
-      if (cancel2 && overlay) {
-        cancel2.addEventListener('click', () => {
-          overlay.classList.remove('open');
-          if (form) form.reset();
-        });
-      }
-      
-      // Override layout width for main content on maintenance view
+      // Cancel buttons for all secondary modals
+      ['cancel-assign-btn-2', 'cancel-resolve-btn-2'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+          });
+        }
+      });
+
+      // Responsive layout
       const handleResize = () => {
         const main = document.querySelector('.app-main');
         if (main) {
-          if (window.innerWidth <= 1024) {
-            main.style.marginLeft = '0';
-            main.style.width = '100%';
-          } else {
-            main.style.marginLeft = '256px';
-            main.style.width = 'calc(100% - 256px)';
-          }
+          main.style.marginLeft = window.innerWidth <= 1024 ? '0' : '256px';
+          main.style.width      = window.innerWidth <= 1024 ? '100%' : 'calc(100% - 256px)';
         }
       };
       window.addEventListener('resize', handleResize);
       handleResize();
-      
-      // Hook up menu toggle specifically for maintenance
+
+      // Sidebar menu toggle
       const menuBtn = document.querySelector('.menu-toggle');
       const sidebar = document.querySelector('.app-sidebar');
       if (menuBtn && sidebar) {
@@ -287,5 +344,51 @@
       }
     });
   </script>
+
+  <!-- ── Kanban card action button styles ──────────────────────── -->
+  <style>
+    .kanban-card-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+    }
+    .kanban-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .kanban-action-btn:hover { opacity: .8; }
+    .btn-approve  { background: #3b82f6; color: #fff; }
+    .btn-assign   { background: #f59e0b; color: #1a1a2e; }
+    .btn-resolve  { background: #10b981; color: #fff; }
+    .kanban-card-tech {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted, #8b8fa8);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kanban-card-reporter {
+      font-size: 11px;
+      color: var(--text-muted, #8b8fa8);
+    }
+    @keyframes slideInToast {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+
+  <!-- scripts -->
+  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="/js/kanban.js"></script>
 </body>
 </html>
+

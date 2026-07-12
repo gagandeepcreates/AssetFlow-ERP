@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
+  root: __dirname,   // serve HTML files from the frontend/ directory
   build: {
     rollupOptions: {
       input: {
@@ -16,6 +17,7 @@ export default defineConfig({
         reports: resolve(__dirname, 'reports.html'),
         notifications: resolve(__dirname, 'notifications.html'),
         register: resolve(__dirname, 'register.html'),
+        audit: resolve(__dirname, 'audit.html'),
       },
     },
   },

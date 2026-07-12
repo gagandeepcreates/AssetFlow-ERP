@@ -45,15 +45,22 @@ CREATE TABLE IF NOT EXISTS Assets (
     FOREIGN KEY (allocated_to) REFERENCES Employees(id) ON DELETE SET NULL
 );
 
--- 5. Maintenance Tickets Table
-CREATE TABLE IF NOT EXISTS Maintenance_Tickets (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    asset_id INT,
-    description TEXT,
-    priority VARCHAR(50) DEFAULT 'Medium', -- 'Low', 'Medium', 'High', 'Critical'
-    status VARCHAR(50) DEFAULT 'Pending', -- 'Pending', 'Approved', 'In Progress', 'Resolved'
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (asset_id) REFERENCES Assets(id) ON DELETE CASCADE
+-- 5. Maintenance Requests Table (full lifecycle storage)
+--    Status flow: Pending → Approved → In Progress → Resolved
+CREATE TABLE IF NOT EXISTS Maintenance_Requests (
+    id               INT AUTO_INCREMENT PRIMARY KEY,
+    asset_id         INT NOT NULL,
+    reporter_id      INT,                           -- Employee who raised the request
+    issue_title      VARCHAR(200) NOT NULL,
+    description      TEXT,
+    priority         VARCHAR(50) DEFAULT 'NORMAL',  -- 'NORMAL', 'HIGH', 'CRITICAL'
+    status           VARCHAR(50) DEFAULT 'Pending', -- 'Pending', 'Approved', 'In Progress', 'Resolved'
+    technician_name  VARCHAR(150),                  -- Filled when status moves to 'In Progress'
+    resolution_notes TEXT,                          -- Filled on 'Resolved'
+    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (asset_id)    REFERENCES Assets(id)    ON DELETE CASCADE,
+    FOREIGN KEY (reporter_id) REFERENCES Employees(id) ON DELETE SET NULL
 );
 
 -- 6. Transfer Requests Table
@@ -120,9 +127,16 @@ INSERT INTO Assets (id, tag, name, category_id, status, serial_number, expected_
 (4, 'AF-9838', 'Dell 27-inch Monitor', 3, 'Maintenance', 'SN-DELL-33290', 'IT Lab', NULL)
 ON DUPLICATE KEY UPDATE tag=tag;
 
--- Seed Maintenance Tickets
-INSERT INTO Maintenance_Tickets (id, asset_id, description, priority, status) VALUES
-(1, 4, 'Monitor power supply failure. Screen does not turn on.', 'Medium', 'Pending')
+-- Seed Maintenance Requests
+-- Ticket 1: Pending — raised by Rohan Mehta for Dell 27-inch Monitor (Asset 4)
+-- Ticket 2: In Progress — approved and technician already assigned (for end-to-end testing)
+INSERT INTO Maintenance_Requests (id, asset_id, reporter_id, issue_title, description, priority, status, technician_name, resolution_notes) VALUES
+(1, 4, 2, 'Monitor Power Supply Failure',
+   'Screen does not turn on after the scheduled power outage. Suspect internal PSU damage.',
+   'HIGH', 'Pending', NULL, NULL),
+(2, 4, 1, 'Quarterly Calibration Check',
+   'Routine colour-calibration and dead-pixel scan for the lab monitor.',
+   'NORMAL', 'In Progress', 'Vikram Nair', NULL)
 ON DUPLICATE KEY UPDATE id=id;
 
 -- Seed Transfer Requests
@@ -152,3 +166,52 @@ CREATE TABLE IF NOT EXISTS Bookings (
 INSERT INTO Bookings (id, resource_id, user_id, start_time, end_time, status) VALUES
 (1, 2, 3, '2026-07-12 09:00:00', '2026-07-12 10:00:00', 'Approved')
 ON DUPLICATE KEY UPDATE id=id;
+
+-- ==========================================
+-- 9. Audit Tables
+-- ==========================================
+
+-- 9a. Audit Cycles — one record per audit run
+--     Status: 'Open' → 'Closed'
+CREATE TABLE IF NOT EXISTS Audit_Cycles (
+    id               INT AUTO_INCREMENT PRIMARY KEY,
+    title            VARCHAR(200) NOT NULL,
+    scope_description TEXT,
+    auditor_id       INT,                              -- FK to Employees
+    status           VARCHAR(50) DEFAULT 'Open',       -- 'Open', 'Closed'
+    report           LONGTEXT,                         -- Auto-generated JSON on close
+    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    closed_at        TIMESTAMP NULL,
+    FOREIGN KEY (auditor_id) REFERENCES Employees(id) ON DELETE SET NULL
+);
+
+-- 9b. Audit Items — one row per asset per cycle
+--     audit_status: 'Pending' → 'Verified' | 'Missing' | 'Damaged'
+CREATE TABLE IF NOT EXISTS Audit_Items (
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    cycle_id     INT NOT NULL,
+    asset_id     INT NOT NULL,
+    audit_status VARCHAR(50) DEFAULT 'Pending',        -- 'Pending', 'Verified', 'Missing', 'Damaged'
+    notes        TEXT,
+    audited_at   TIMESTAMP NULL,
+    FOREIGN KEY (cycle_id) REFERENCES Audit_Cycles(id) ON DELETE CASCADE,
+    FOREIGN KEY (asset_id) REFERENCES Assets(id)       ON DELETE CASCADE,
+    UNIQUE KEY uq_cycle_asset (cycle_id, asset_id)     -- one row per asset per cycle
+);
+
+-- Seed: One Open audit cycle (Q3 Engineering Audit) covering all 4 seeded assets
+--   Items: Asset 1 Verified, Asset 2 Pending, Asset 3 Missing, Asset 4 Damaged (for testing)
+INSERT INTO Audit_Cycles (id, title, scope_description, auditor_id, status) VALUES
+(1, 'Q3-2026 Engineering Audit',
+   'Physical inventory verification for all Engineering department assets (Jul 1–15 2026)',
+   1,       -- Auditor: Aditi Rao (Admin)
+   'Open')
+ON DUPLICATE KEY UPDATE id=id;
+
+INSERT INTO Audit_Items (id, cycle_id, asset_id, audit_status, notes, audited_at) VALUES
+(1, 1, 1, 'Verified', 'Found at Desk E12, good condition.',         '2026-07-12 09:15:00'),
+(2, 1, 2, 'Pending',   NULL,                                         NULL),
+(3, 1, 3, 'Missing',  'Chair not found at Desk E14 or nearby.',     '2026-07-12 09:30:00'),
+(4, 1, 4, 'Damaged',  'Monitor cracked screen, logged for repair.', '2026-07-12 09:45:00')
+ON DUPLICATE KEY UPDATE id=id;
+
