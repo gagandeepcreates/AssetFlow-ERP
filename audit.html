@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/js/guard.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asset Audit - AssetFlow ERP</title>
+  
+  <!-- fonts & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet">
+  
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <style>
+    .audit-summary-card {
+      max-width: 800px;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .audit-meta-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    
+    .audit-meta-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: var(--font-family-sans);
+    }
+    
+    .audit-table-card {
+      max-width: 800px;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .discrepancy-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #ffb95f;
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-lg);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      max-width: 800px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo flex-center">
+          <span class="material-symbols-outlined text-primary-color font-bold" style="font-size: 24px;">precision_manufacturing</span>
+        </div>
+        <div>
+          <h1 class="sidebar-brand-name">AssetFlow</h1>
+          <p class="sidebar-brand-sub">Enterprise ERP</p>
+        </div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a href="index.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="org-setup.html">
+            <span class="material-symbols-outlined">corporate_fare</span>
+            <span>Organization setup</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="assets.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Assets</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="transfer.html">
+            <span class="material-symbols-outlined">move_up</span>
+            <span>Allocation & Transfer</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="booking.html">
+            <span class="material-symbols-outlined">event_seat</span>
+            <span>Resource Booking</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="maintenance.html">
+            <span class="material-symbols-outlined">build</span>
+            <span>Maintenance</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item active">
+          <a href="audit.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fact_check</span>
+            <span>Audit</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="reports.html">
+            <span class="material-symbols-outlined">assessment</span>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="notifications.html">
+            <span class="material-symbols-outlined">notifications</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="sidebar-menu-item">
+          <a href="#">
+            <span class="material-symbols-outlined">help</span>
+            <span>Support</span>
+          </a>
+        </div>
+        <div class="sidebar-menu-item">
+          <a href="#">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <div style="flex: 1; display: flex; flex-direction: column;">
+      <!-- Header -->
+      <header class="app-header">
+        <div style="display: flex; align-items: center; flex: 1;">
+          <button class="menu-toggle material-symbols-outlined">menu</button>
+          <div class="header-search">
+            <span class="material-symbols-outlined header-search-icon">search</span>
+            <input type="text" class="header-search-input" placeholder="Search audits...">
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <button class="header-btn">
+            <span class="material-symbols-outlined">notifications</span>
+          </button>
+          <button class="header-btn">
+            <span class="material-symbols-outlined">apps</span>
+          </button>
+          <div class="header-profile">
+            <img class="header-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpgGu1Dcl43l8BU50dPb2Jju-V7L_mI1uEadilxLhUkqbsJfiCcEBWEfm68tr37j8XYlQ_IO4KyziKEm9YLyvPwr9hWZGnVEewI_rzJZ1Lg-1isB-S3zC7PET4YkuYkektEX0wHd-tjP1owXUu-vyHGVbwnL3dvjOz7Gi3xXabHjHlUyehk3ML6uvEGKfu7rgMOVNT1Xn5ipdfKD6a2c4mmTKyB6Waq8QM4nT7L7MkmWU93sOgB2gF" alt="User Profile">
+          </div>
+        </div>
+      </header>
+      
+      <!-- Main Content -->
+      <main class="app-main fade-in">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-title-area">
+            <h2>Asset Audit</h2>
+            <p class="text-muted">Initiate cycle audits and verify physical inventory discrepancies.</p>
+          </div>
+        </div>
+        
+        <!-- Active Cycle Info -->
+        <div class="glass-card audit-summary-card">
+          <div class="audit-meta-title">Q3 audit: Engineering dept - 1-15 jul</div>
+          <div class="audit-meta-sub">Auditors: A. Rao, S. Iqbal</div>
+        </div>
+        
+        <!-- Audit table card -->
+        <div class="glass-table-container audit-table-card">
+          <table class="glass-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Asset</th>
+                <th style="width: 45%;">Expected location</th>
+                <th style="width: 30%;">Verification</th>
+              </tr>
+            </thead>
+            <tbody class="font-mono">
+              <tr class="table-row-glass">
+                <td>AF-003 Dell laptop</td>
+                <td>Desk E12</td>
+                <td>
+                  <span class="status-chip success" style="cursor: pointer;">
+                    <span class="dot"></span> Verified
+                  </span>
+                </td>
+              </tr>
+              <tr class="table-row-glass">
+                <td>AF-9921 Office chair</td>
+                <td>Desk E14</td>
+                <td>
+                  <span class="status-chip danger" style="cursor: pointer;">
+                    <span class="dot"></span> Missing
+                  </span>
+                </td>
+              </tr>
+              <tr class="table-row-glass">
+                <td>AF-9838 Monitor</td>
+                <td>Desk E15</td>
+                <td>
+                  <span class="status-chip warning" style="cursor: pointer;">
+                    <span class="dot"></span> Damaged
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Discrepancy warning banner -->
+        <div class="discrepancy-banner">
+          <span class="material-symbols-outlined text-warning" style="font-size: 20px;">warning</span>
+          <span><strong>2 assets flagged</strong> - discrepancy report generated automatically</span>
+        </div>
+        
+        <!-- Action Button -->
+        <div>
+          <button class="btn btn-secondary" style="border-color: rgba(255,255,255,0.15);" id="close-audit-btn">
+            <span class="material-symbols-outlined" style="font-size:18px;">task_alt</span>
+            Close audit cycle
+          </button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- script -->
+  <script type="module" src="/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const closeBtn = document.getElementById('close-audit-btn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          alert('Closing Q3 audit cycle and archiving discrepancy logs...');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

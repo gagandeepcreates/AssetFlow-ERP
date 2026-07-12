@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - AssetFlow ERP</title>
+  
+  <!-- fonts & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet">
+  
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+      background: radial-gradient(circle at center, #1b2838 0%, var(--bg-canvas) 100%);
+    }
+
+    .register-container {
+      width: 100%;
+      max-width: 440px;
+      padding: var(--container-padding);
+    }
+
+    .register-logo {
+      font-size: 32px;
+      margin-bottom: var(--unit);
+      text-align: center;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+    }
+
+    .register-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .register-form-group {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .register-footer {
+      text-align: center;
+      margin-top: var(--spacing-md);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .register-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    
+    .register-link:hover {
+      color: var(--primary-glow);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="glass-card fade-in">
+      <div class="register-logo">
+        <span class="material-symbols-outlined text-primary-color font-bold" style="font-size: 36px;">precision_manufacturing</span>
+        <span>AssetFlow</span>
+      </div>
+      <div class="register-subtitle">Create a new ERP Employee account</div>
+      
+      <form id="register-form">
+        <!-- Full Name -->
+        <div class="form-group register-form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input type="text" class="glass-input" id="reg-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+
+        <!-- Email Address -->
+        <div class="form-group register-form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" class="glass-input" id="reg-email" placeholder="name@organization.com" required autocomplete="username">
+        </div>
+        
+        <!-- Password -->
+        <div class="form-group register-form-group">
+          <label class="form-label" for="reg-password">Password</label>
+          <input type="password" class="glass-input" id="reg-password" placeholder="••••••••" required autocomplete="new-password">
+        </div>
+
+        <!-- Department Selection -->
+        <div class="form-group register-form-group">
+          <label class="form-label" for="reg-dept">Department</label>
+          <select class="glass-select" id="reg-dept" required>
+            <option value="">Select Department...</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Facilities">Facilities</option>
+            <option value="Field Ops">Field Ops</option>
+            <option value="Procurement">Procurement</option>
+            <option value="Human Resources">Human Resources</option>
+          </select>
+        </div>
+        
+        <div style="margin-top: var(--spacing-lg);">
+          <button type="submit" class="btn btn-primary w-full" style="justify-content: center; padding: 12px 0;">
+            <span class="material-symbols-outlined" style="font-size: 20px;">person_add</span>
+            Create Account
+          </button>
+        </div>
+      </form>
+      
+      <div class="register-footer">
+        Already have an account? <a href="index.html" class="register-link">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- logic script -->
+  <script type="module" src="/js/register.js"></script>
+</body>
+</html>

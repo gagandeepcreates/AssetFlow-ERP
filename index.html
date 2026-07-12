@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - AssetFlow ERP</title>
+  
+  <!-- fonts & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet">
+  
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+      background: radial-gradient(circle at center, #1b2838 0%, var(--bg-canvas) 100%);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: var(--container-padding);
+    }
+
+    .login-logo {
+      font-size: 32px;
+      margin-bottom: var(--unit);
+      text-align: center;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+    }
+
+    .login-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .login-form-group {
+      margin-bottom: var(--spacing-md);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="glass-card fade-in">
+      <div class="login-logo">
+        <span class="material-symbols-outlined text-primary-color font-bold" style="font-size: 36px;">precision_manufacturing</span>
+        <span>AssetFlow</span>
+      </div>
+      <div class="login-subtitle">Enterprise ERP System Authentication</div>
+      
+      <form id="login-form">
+        <div class="form-group login-form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input type="email" class="glass-input" id="email" placeholder="name@organization.com" required autocomplete="username">
+        </div>
+        
+        <div class="form-group login-form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" class="glass-input" id="password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        
+        <div style="margin-top: var(--spacing-lg);">
+          <button type="submit" class="btn btn-primary w-full" style="justify-content: center; padding: 12px 0;">
+            <span class="material-symbols-outlined" style="font-size: 20px;">login</span>
+            Sign In
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- logic script -->
+  <script type="module" src="/js/auth.js"></script>
+</body>
+</html>

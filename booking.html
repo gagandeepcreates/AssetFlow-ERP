@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/js/guard.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resource Booking - AssetFlow ERP</title>
+  
+  <!-- fonts & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet">
+  
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <style>
+    .booking-card {
+      max-width: 800px;
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      margin-top: var(--spacing-lg);
+      position: relative;
+      background: rgba(255, 255, 255, 0.01);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-glass-low);
+      padding: var(--spacing-md) 0;
+      max-height: 450px;
+      overflow-y: auto;
+    }
+    
+    .timeline-row {
+      display: flex;
+      min-height: 60px;
+      position: relative;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+      align-items: center;
+    }
+    
+    .timeline-row:last-child {
+      border-bottom: none;
+    }
+    
+    .time-label {
+      width: 100px;
+      padding: var(--spacing-sm);
+      text-align: right;
+      font-family: var(--font-family-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border-glass-low);
+    }
+    
+    .slot-content {
+      flex: 1;
+      position: relative;
+      padding: var(--spacing-xs) var(--spacing-md);
+      display: flex;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+    }
+    
+    .booking-bar {
+      background: var(--primary-container);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: var(--primary-fixed-dim);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo flex-center">
+          <span class="material-symbols-outlined text-primary-color font-bold" style="font-size: 24px;">precision_manufacturing</span>
+        </div>
+        <div>
+          <h1 class="sidebar-brand-name">AssetFlow</h1>
+          <p class="sidebar-brand-sub">Enterprise ERP</p>
+        </div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a href="dashboard.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="org-setup.html">
+            <span class="material-symbols-outlined">corporate_fare</span>
+            <span>Organization setup</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="assets.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Assets</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="transfer.html">
+            <span class="material-symbols-outlined">move_up</span>
+            <span>Allocation & Transfer</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item active">
+          <a href="booking.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event_seat</span>
+            <span>Resource Booking</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="maintenance.html">
+            <span class="material-symbols-outlined">build</span>
+            <span>Maintenance</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="audit.html">
+            <span class="material-symbols-outlined">fact_check</span>
+            <span>Audit</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="reports.html">
+            <span class="material-symbols-outlined">assessment</span>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="notifications.html">
+            <span class="material-symbols-outlined">notifications</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="sidebar-menu-item">
+          <a href="#">
+            <span class="material-symbols-outlined">help</span>
+            <span>Support</span>
+          </a>
+        </div>
+        <div class="sidebar-menu-item">
+          <a href="index.html">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <div style="flex: 1; display: flex; flex-direction: column;">
+      <!-- Header -->
+      <header class="app-header">
+        <div style="display: flex; align-items: center; flex: 1;">
+          <button class="menu-toggle material-symbols-outlined">menu</button>
+          <div class="header-search">
+            <span class="material-symbols-outlined header-search-icon">search</span>
+            <input type="text" class="header-search-input" placeholder="Search reservations...">
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <button class="header-btn">
+            <span class="material-symbols-outlined">notifications</span>
+          </button>
+          <button class="header-btn">
+            <span class="material-symbols-outlined">apps</span>
+          </button>
+          <div class="header-profile">
+            <img class="header-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpgGu1Dcl43l8BU50dPb2Jju-V7L_mI1uEadilxLhUkqbsJfiCcEBWEfm68tr37j8XYlQ_IO4KyziKEm9YLyvPwr9hWZGnVEewI_rzJZ1Lg-1isB-S3zC7PET4YkuYkektEX0wHd-tjP1owXUu-vyHGVbwnL3dvjOz7Gi3xXabHjHlUyehk3ML6uvEGKfu7rgMOVNT1Xn5ipdfKD6a2c4mmTKyB6Waq8QM4nT7L7MkmWU93sOgB2gF" alt="User Profile">
+          </div>
+        </div>
+      </header>
+      
+      <!-- Main Content -->
+      <main class="app-main fade-in">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-title-area">
+            <h2>Resource Booking</h2>
+            <p class="text-muted">Schedule and reserve corporate hardware, facilities, or device slots.</p>
+          </div>
+        </div>
+        
+        <!-- Booking Card -->
+        <div class="glass-card booking-card">
+          <!-- Resource selection -->
+          <div class="form-group">
+            <label class="form-label" for="resource-select">Select Resource (Asset)</label>
+            <select class="glass-select font-semibold" id="resource-select" style="font-size: 16px;">
+              <option value="">Loading resources...</option>
+            </select>
+          </div>
+          
+          <!-- Timeline Scheduler -->
+          <div class="timeline" id="bookings-timeline">
+            <!-- Dynamically rendered -->
+          </div>
+          
+          <!-- Action Button -->
+          <div style="margin-top: var(--spacing-lg);">
+            <button class="btn btn-primary" style="background: var(--secondary); box-shadow: 0 0 15px var(--secondary-glow); border-color: rgba(16, 185, 129, 0.2);" id="book-slot-btn">
+              <span class="material-symbols-outlined" style="font-size: 18px;">event_available</span>
+              Book a slot
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Book Slot Modal Overlay -->
+  <div class="modal-overlay" id="booking-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Create New Resource Booking</h3>
+        <button class="modal-close" id="booking-modal-close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <form id="booking-form">
+        <div class="form-group">
+          <label class="form-label" for="booking-resource-tag">Resource (Asset)</label>
+          <input type="text" class="glass-input font-mono" id="booking-resource-tag" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="booking-start">Start Date & Time</label>
+          <input type="datetime-local" class="glass-input" id="booking-start" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="booking-end">End Date & Time</label>
+          <input type="datetime-local" class="glass-input" id="booking-end" required>
+        </div>
+        <div class="modal-actions" style="margin-top: var(--spacing-lg);">
+          <button type="button" class="btn btn-secondary" id="booking-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- script -->
+  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="/js/booking.js"></script>
+</body>
+</html>

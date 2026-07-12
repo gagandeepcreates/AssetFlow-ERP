@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/js/guard.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Setup - AssetFlow ERP</title>
+  
+  <!-- fonts & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet">
+  
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <style>
+    /* Styling for organization tab headers */
+    .org-tabs {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+    
+    .org-tab {
+      background: var(--bg-glass-med);
+      border: 1px solid var(--border-glass-low);
+      padding: 10px 24px;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .org-tab:hover {
+      background: var(--bg-glass-high);
+      color: var(--text-primary);
+    }
+    
+    .org-tab.active {
+      background: var(--primary-container);
+      color: var(--primary);
+      border-color: rgba(59, 130, 246, 0.3);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+    }
+    
+    .org-tab.add-tab {
+      border-style: dashed;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    
+    .org-notice {
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-md);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-glass-low);
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+
+    /* Tab content toggles */
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+
+    .org-actions-cell {
+      display: flex;
+      gap: var(--spacing-xs);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo flex-center">
+          <span class="material-symbols-outlined text-primary-color font-bold" style="font-size: 24px;">precision_manufacturing</span>
+        </div>
+        <div>
+          <h1 class="sidebar-brand-name">AssetFlow</h1>
+          <p class="sidebar-brand-sub">Enterprise ERP</p>
+        </div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a href="dashboard.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item active">
+          <a href="org-setup.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">corporate_fare</span>
+            <span>Organization setup</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="assets.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Assets</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="transfer.html">
+            <span class="material-symbols-outlined">move_up</span>
+            <span>Allocation & Transfer</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="booking.html">
+            <span class="material-symbols-outlined">event_seat</span>
+            <span>Resource Booking</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="maintenance.html">
+            <span class="material-symbols-outlined">build</span>
+            <span>Maintenance</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="audit.html">
+            <span class="material-symbols-outlined">fact_check</span>
+            <span>Audit</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="reports.html">
+            <span class="material-symbols-outlined">assessment</span>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="notifications.html">
+            <span class="material-symbols-outlined">notifications</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="sidebar-menu-item">
+          <a href="#">
+            <span class="material-symbols-outlined">help</span>
+            <span>Support</span>
+          </a>
+        </div>
+        <div class="sidebar-menu-item">
+          <a href="index.html">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <div style="flex: 1; display: flex; flex-direction: column;">
+      <!-- Header -->
+      <header class="app-header">
+        <div style="display: flex; align-items: center; flex: 1;">
+          <button class="menu-toggle material-symbols-outlined">menu</button>
+          <div class="header-search">
+            <span class="material-symbols-outlined header-search-icon">search</span>
+            <input type="text" class="header-search-input" placeholder="Search master data...">
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <button class="header-btn">
+            <span class="material-symbols-outlined">notifications</span>
+          </button>
+          <button class="header-btn">
+            <span class="material-symbols-outlined">apps</span>
+          </button>
+          <div class="header-profile">
+            <img class="header-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpgGu1Dcl43l8BU50dPb2Jju-V7L_mI1uEadilxLhUkqbsJfiCcEBWEfm68tr37j8XYlQ_IO4KyziKEm9YLyvPwr9hWZGnVEewI_rzJZ1Lg-1isB-S3zC7PET4YkuYkektEX0wHd-tjP1owXUu-vyHGVbwnL3dvjOz7Gi3xXabHjHlUyehk3ML6uvEGKfu7rgMOVNT1Xn5ipdfKD6a2c4mmTKyB6Waq8QM4nT7L7MkmWU93sOgB2gF" alt="User Profile">
+          </div>
+        </div>
+      </header>
+      
+      <!-- Main Content -->
+      <main class="app-main fade-in">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-title-area">
+            <h2>Organization Setup</h2>
+            <p class="text-muted">Configure organizational departments, asset categories, and employees.</p>
+          </div>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="org-tabs">
+          <button class="org-tab active" data-tab="departments">Departments</button>
+          <button class="org-tab" data-tab="categories">Categories</button>
+          <button class="org-tab" data-tab="employees">Employees</button>
+          <button class="org-tab add-tab" id="btn-add-item">
+            <span class="material-symbols-outlined" style="font-size: 16px;">add</span> Add New
+          </button>
+        </div>
+        
+        <!-- Tab 1: Departments Content -->
+        <div class="tab-content active" id="tab-departments">
+          <div class="glass-table-container">
+            <table class="glass-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%;">ID</th>
+                  <th style="width: 30%;">Department</th>
+                  <th style="width: 25%;">Parent Dept</th>
+                  <th style="width: 15%;">Status</th>
+                  <th style="width: 20%;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="departments-list-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Categories Content -->
+        <div class="tab-content" id="tab-categories">
+          <div class="glass-table-container">
+            <table class="glass-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%;">ID</th>
+                  <th style="width: 50%;">Category Name</th>
+                  <th style="width: 20%;">Warranty (Months)</th>
+                  <th style="width: 20%;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="categories-list-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Employees Content -->
+        <div class="tab-content" id="tab-employees">
+          <div class="glass-table-container">
+            <table class="glass-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%;">ID</th>
+                  <th style="width: 25%;">Name</th>
+                  <th style="width: 25%;">Email</th>
+                  <th style="width: 20%;">Department</th>
+                  <th style="width: 20%;">Role</th>
+                </tr>
+              </thead>
+              <tbody id="employees-list-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Note block -->
+        <div class="org-notice">
+          <span class="material-symbols-outlined text-primary-color" style="font-size: 20px;">info</span>
+          <span>Editing master registries will instantly sync dropdowns and directories across all ERP modules.</span>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create/Edit Modal Overlay -->
+  <div class="modal-overlay" id="setup-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title">Create Item</h3>
+        <button class="modal-close" id="modal-close-btn">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <form id="setup-form">
+        <!-- Dynamic Form Fields will be inserted by JS based on active tab -->
+        <div id="modal-fields-container"></div>
+        
+        <div class="modal-actions" style="margin-top: var(--spacing-lg);">
+          <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="modal-save-btn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- script -->
+  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="/js/org-setup.js"></script>
+</body>
+</html>

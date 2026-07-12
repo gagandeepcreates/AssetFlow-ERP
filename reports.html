@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/js/guard.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports & Analytics - AssetFlow ERP</title>
+  
+  <!-- fonts & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet">
+  
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <style>
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gutter);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .chart-card {
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .chart-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .chart-viewport {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      position: relative;
+      border-bottom: 2px solid var(--border-glass-high);
+      padding-bottom: 8px;
+    }
+    
+    /* CSS Bar Chart */
+    .bar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 40px;
+      gap: 8px;
+    }
+    
+    .bar {
+      width: 100%;
+      background: linear-gradient(180deg, var(--primary) 0%, rgba(59, 130, 246, 0.2) 100%);
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .bar-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-family-sans);
+    }
+    
+    /* Info sections */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gutter);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .insight-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-glass-low);
+      padding-bottom: var(--spacing-xs);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .insight-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+    
+    .insight-item {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    
+    .insight-item strong {
+      color: var(--text-primary);
+    }
+    
+    .maintenance-list-card {
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    @media (max-width: 900px) {
+      .charts-grid, .insights-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <nav class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo flex-center">
+          <span class="material-symbols-outlined text-primary-color font-bold" style="font-size: 24px;">precision_manufacturing</span>
+        </div>
+        <div>
+          <h1 class="sidebar-brand-name">AssetFlow</h1>
+          <p class="sidebar-brand-sub">Enterprise ERP</p>
+        </div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a href="index.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="org-setup.html">
+            <span class="material-symbols-outlined">corporate_fare</span>
+            <span>Organization setup</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="assets.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span>Assets</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="transfer.html">
+            <span class="material-symbols-outlined">move_up</span>
+            <span>Allocation & Transfer</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="booking.html">
+            <span class="material-symbols-outlined">event_seat</span>
+            <span>Resource Booking</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="maintenance.html">
+            <span class="material-symbols-outlined">build</span>
+            <span>Maintenance</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="audit.html">
+            <span class="material-symbols-outlined">fact_check</span>
+            <span>Audit</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item active">
+          <a href="reports.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assessment</span>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="notifications.html">
+            <span class="material-symbols-outlined">notifications</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="sidebar-menu-item">
+          <a href="#">
+            <span class="material-symbols-outlined">help</span>
+            <span>Support</span>
+          </a>
+        </div>
+        <div class="sidebar-menu-item">
+          <a href="#">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <div style="flex: 1; display: flex; flex-direction: column;">
+      <!-- Header -->
+      <header class="app-header">
+        <div style="display: flex; align-items: center; flex: 1;">
+          <button class="menu-toggle material-symbols-outlined">menu</button>
+          <div class="header-search">
+            <span class="material-symbols-outlined header-search-icon">search</span>
+            <input type="text" class="header-search-input" placeholder="Search analytics reports...">
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <button class="header-btn">
+            <span class="material-symbols-outlined">notifications</span>
+          </button>
+          <button class="header-btn">
+            <span class="material-symbols-outlined">apps</span>
+          </button>
+          <div class="header-profile">
+            <img class="header-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpgGu1Dcl43l8BU50dPb2Jju-V7L_mI1uEadilxLhUkqbsJfiCcEBWEfm68tr37j8XYlQ_IO4KyziKEm9YLyvPwr9hWZGnVEewI_rzJZ1Lg-1isB-S3zC7PET4YkuYkektEX0wHd-tjP1owXUu-vyHGVbwnL3dvjOz7Gi3xXabHjHlUyehk3ML6uvEGKfu7rgMOVNT1Xn5ipdfKD6a2c4mmTKyB6Waq8QM4nT7L7MkmWU93sOgB2gF" alt="User Profile">
+          </div>
+        </div>
+      </header>
+      
+      <!-- Main Content -->
+      <main class="app-main fade-in">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-title-area">
+            <h2>Reports & Analytics</h2>
+            <p class="text-muted">Analyze asset utility rates, maintenance frequencies, and idle resources.</p>
+          </div>
+        </div>
+        
+        <!-- Chart Grid -->
+        <section class="charts-grid">
+          <!-- Chart 1: Utilization by Dept -->
+          <div class="glass-card chart-card">
+            <h3 class="chart-title">Utilization by department</h3>
+            <div class="chart-viewport">
+              <div class="bar-container">
+                <div class="bar" style="height: 60px;"></div>
+                <span class="bar-label">ENG</span>
+              </div>
+              <div class="bar-container">
+                <div class="bar" style="height: 120px;"></div>
+                <span class="bar-label">OPS</span>
+              </div>
+              <div class="bar-container">
+                <div class="bar" style="height: 150px;"></div>
+                <span class="bar-label">FIN</span>
+              </div>
+              <div class="bar-container">
+                <div class="bar" style="height: 90px;"></div>
+                <span class="bar-label">HR</span>
+              </div>
+              <div class="bar-container">
+                <div class="bar" style="height: 70px;"></div>
+                <span class="bar-label">FAC</span>
+              </div>
+              <div class="bar-container">
+                <div class="bar" style="height: 130px;"></div>
+                <span class="bar-label">SAL</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Chart 2: Maintenance Frequency -->
+          <div class="glass-card chart-card">
+            <h3 class="chart-title">Maintenance Frequency</h3>
+            <div class="chart-viewport" style="align-items: stretch; padding: 0;">
+              <!-- SVG Line chart -->
+              <svg viewBox="0 0 400 180" style="width: 100%; height: 100%;" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="svg-grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Area fill -->
+                <path d="M 0 160 L 80 120 L 160 130 L 240 90 L 320 50 L 400 40 L 400 180 L 0 180 Z" fill="url(#svg-grad)"/>
+                <!-- Line path -->
+                <path d="M 0 160 L 80 120 L 160 130 L 240 90 L 320 50 L 400 40" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
+              </svg>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Insights Row -->
+        <section class="insights-grid">
+          <!-- Column 1: Most Used -->
+          <div class="glass-card">
+            <h3 class="insight-section-title" style="color: var(--primary);">Most used assets</h3>
+            <ul class="insight-list">
+              <li class="insight-item"><strong>Room B2</strong>: 34 bookings this month</li>
+              <li class="insight-item"><strong>Van AF-343</strong>: 21 trips this month</li>
+              <li class="insight-item"><strong>Projector AF-335</strong>: 18 uses</li>
+            </ul>
+          </div>
+          
+          <!-- Column 2: Idle -->
+          <div class="glass-card">
+            <h3 class="insight-section-title" style="color: var(--text-muted);">Idle assets</h3>
+            <ul class="insight-list">
+              <li class="insight-item"><strong>Camera AF-0301</strong>: unused 60+ days</li>
+              <li class="insight-item"><strong>chair AF-0410</strong>: unused 45 days</li>
+            </ul>
+          </div>
+        </section>
+        
+        <!-- Maintenance list card -->
+        <div class="glass-card maintenance-list-card">
+          <h3 class="insight-section-title" style="color: var(--tertiary);">Assets due for maintenance / nearing retirement</h3>
+          <ul class="insight-list">
+            <li class="insight-item"><strong>Forklift AF-0087</strong>: service due in 5 days</li>
+            <li class="insight-item"><strong>Laptop AF-0020</strong>: 4 years old : nearing retirement</li>
+          </ul>
+        </div>
+        
+        <!-- Export Button -->
+        <div>
+          <button class="btn btn-primary" id="export-report-btn">
+            <span class="material-symbols-outlined" style="font-size: 18px;">download</span>
+            Export report
+          </button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- script -->
+  <script type="module" src="/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const exportBtn = document.getElementById('export-report-btn');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+          alert('Generating PDF summary report...');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

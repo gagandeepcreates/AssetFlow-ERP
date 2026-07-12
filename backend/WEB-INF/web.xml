@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0"
+         metadata-complete="false">
+
+    <display-name>AssetFlow ERP Servlet Application</display-name>
+
+    <description>
+        AssetFlow Enterprise Resource Planning (ERP) Java Servlet Backend.
+        Manages JDBC connections, session tracking, CORS requests, and database queries.
+        Compatible with Java EE 8 / Tomcat 9 deployment environments.
+    </description>
+
+    <!-- 
+       Note: The AuthServlet is already mapped to "/login" using WebServlet annotations.
+       Do not map it manually here to avoid duplicate mapping conflicts in Tomcat.
+    -->
+
+    <!-- session configurations -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure> <!-- set to true if running over HTTPS in production -->
+        </cookie-config>
+    </session-config>
+
+    <!-- default welcome page redirection -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>
